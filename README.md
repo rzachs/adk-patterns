@@ -1,11 +1,11 @@
 # ADK Patterns
 
-A collection of Google Agent Development Kit (ADK) patterns built with Python and Gemini, organized by architecture type.
+A collection of Google Agent Development Kit (ADK) patterns built with Python and Claude, organized by architecture type.
 
 ## Patterns
 
 ### Day 1a — Single Agent
-A simple agent with Google Search tool. The foundation of ADK agent development.
+A simple agent with web search tool. The foundation of ADK agent development.
 
 ### Day 1b — Multi-Agent Architectures
 Four patterns for coordinating multiple agents:
@@ -21,22 +21,31 @@ Two variants of a currency conversion agent demonstrating custom function tools 
 - **Currency** — Single agent with two function tools (`get_exchange_rate`, `get_fee_for_payment_method`); performs the calculation itself
 - **Enhanced Currency** — Same tools plus a `CalculationAgent` sub-agent (exposed via `AgentTool`) that runs all arithmetic through `BuiltInCodeExecutor` instead of inline LLM math
 
+### Day 2b — Long Running and MCP
+Patterns for MCP tool integration and long-running workflows.
+
 ## Project Structure
 
 ```
 adk-patterns/
-├── day1a/                    # Single agent with Google Search
+├── shared/                   # Shared utilities
+│   └── tools.py              # web_search tool (via serper.dev)
+├── day1a/                    # Single agent with web search
 │   └── agent.py
 ├── day1b/                    # Multi-agent patterns
-│   ├── config.py             # Shared model and retry configuration
+│   ├── config.py             # Shared model factory (Claude Sonnet 4.6)
 │   ├── orchestrator/         # LLM-based dynamic orchestration
 │   ├── sequential/           # Guaranteed ordered pipeline
 │   ├── parallel/             # Concurrent execution
 │   └── loop/                 # Iterative refinement cycle
-└── day2a/                    # Tool use and code execution
-    ├── config.py             # Shared model and retry configuration
-    ├── currency/             # Function tools, agent does the math
-    └── enhanced_currency/    # Adds a code-executing sub-agent for arithmetic
+├── day2a/                    # Tool use and code execution
+│   ├── config.py             # Shared model factory (Claude Sonnet 4.6)
+│   ├── currency/             # Function tools, agent does the math
+│   └── enhanced_currency/    # Adds a code-executing sub-agent for arithmetic
+└── day2b/                    # Long running and MCP patterns
+    ├── config.py             # Shared model factory (Claude Sonnet 4.6)
+    ├── long_running/
+    └── mcp_agent/
 ```
 
 ## Setup
@@ -44,12 +53,15 @@ adk-patterns/
 1. Clone the repo
 2. Create a virtual environment: `python -m venv venv`
 3. Activate it: `venv\Scripts\Activate.ps1`
-4. Install dependencies: `pip install google-adk python-dotenv`
-5. Create a `.env` file in the root with your Gemini API key:
+4. Install dependencies: `pip install google-adk anthropic python-dotenv requests`
+5. Create a `.env` file in the root:
 
 ```
-GOOGLE_API_KEY=your_key_here
+ANTHROPIC_API_KEY=your_anthropic_api_key_here
+SERPER_API_KEY=your_serper_api_key_here
 ```
+
+Get an Anthropic API key from [console.anthropic.com](https://console.anthropic.com) and a Serper API key from [serper.dev](https://serper.dev).
 
 ## Running
 
@@ -62,8 +74,12 @@ adk web day1b
 
 # Currency / tool-use patterns (pick from dropdown)
 adk web day2a
+
+# Long running and MCP patterns (pick from dropdown)
+adk web day2b
 ```
 
 ## Requirements
 - Python 3.9–3.12
-- Gemini API key from [Google AI Studio](https://aistudio.google.com/app/api-keys)
+- Anthropic API key from [console.anthropic.com](https://console.anthropic.com)
+- Serper API key from [serper.dev](https://serper.dev) (used for web search in day1a, day1b parallel/orchestrator)
