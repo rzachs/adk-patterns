@@ -1,17 +1,7 @@
 from config import get_model
 
-from dotenv import load_dotenv
-load_dotenv()
-
 from google.adk.agents import Agent, ParallelAgent, SequentialAgent
-from google.adk.models.google_llm import Gemini
 from google.adk.tools import google_search
-from google.genai import types
-
-retry_config = types.HttpRetryOptions(
-    attempts=5, exp_base=7, initial_delay=1,
-    http_status_codes=[429, 500, 503, 504]
-)
 
 tech_researcher = Agent(
     name="TechResearcher",
@@ -23,7 +13,7 @@ tech_researcher = Agent(
 
 health_researcher = Agent(
     name="HealthResearcher",
-    model=Gemini(model="gemini-2.5-flash", retry_options=retry_config),
+    model=get_model("gemini-2.5-flash"),
     instruction="Research recent medical breakthroughs. Include 3 significant advances, practical applications, and timelines. Keep it under 100 words.",
     tools=[google_search],
     output_key="health_research",

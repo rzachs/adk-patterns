@@ -1,17 +1,7 @@
 from config import get_model
 
-from dotenv import load_dotenv
-load_dotenv()
-
 from google.adk.agents import Agent
-from google.adk.models.google_llm import Gemini
 from google.adk.tools import AgentTool, google_search
-from google.genai import types
-
-retry_config = types.HttpRetryOptions(
-    attempts=5, exp_base=7, initial_delay=1,
-    http_status_codes=[429, 500, 503, 504]
-)
 
 research_agent = Agent(
     name="ResearchAgent",
