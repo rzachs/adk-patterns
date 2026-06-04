@@ -1,13 +1,18 @@
 from config import get_model
 
+import sys, os
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../.."))
+
 from google.adk.agents import Agent
-from google.adk.tools import AgentTool, google_search
+from google.adk.tools import AgentTool
+
+from shared.tools import web_search
 
 research_agent = Agent(
     name="ResearchAgent",
     model=get_model(),
-    instruction="Use google_search to find 2-3 relevant pieces of information on the topic and present findings with citations.",
-    tools=[google_search],
+    instruction="Use web_search to find 2-3 relevant pieces of information on the topic and present findings with citations.",
+    tools=[web_search],
     output_key="research_findings",
 )
 

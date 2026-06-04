@@ -1,21 +1,25 @@
 from config import get_model
 
+import sys, os
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../.."))
+
 from google.adk.agents import Agent, ParallelAgent, SequentialAgent
-from google.adk.tools import google_search
+
+from shared.tools import web_search
 
 tech_researcher = Agent(
     name="TechResearcher",
     model=get_model(),
     instruction="Research the latest AI/ML trends. Include 3 key developments, main companies involved, and potential impact. Keep it under 100 words.",
-    tools=[google_search],
+    tools=[web_search],
     output_key="tech_research",
 )
 
 health_researcher = Agent(
     name="HealthResearcher",
-    model=get_model("gemini-2.5-flash"),
+    model=get_model(),
     instruction="Research recent medical breakthroughs. Include 3 significant advances, practical applications, and timelines. Keep it under 100 words.",
-    tools=[google_search],
+    tools=[web_search],
     output_key="health_research",
 )
 
@@ -23,7 +27,7 @@ finance_researcher = Agent(
     name="FinanceResearcher",
     model=get_model(),
     instruction="Research current fintech trends. Include 3 key trends, market implications, and future outlook. Keep it under 100 words.",
-    tools=[google_search],
+    tools=[web_search],
     output_key="finance_research",
 )
 
