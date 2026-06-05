@@ -22,7 +22,20 @@ Two variants of a currency conversion agent demonstrating custom function tools 
 - **Enhanced Currency** — Same tools plus a `CalculationAgent` sub-agent (exposed via `AgentTool`) that runs all arithmetic through `BuiltInCodeExecutor` instead of inline LLM math
 
 ### Day 2b — Long Running and MCP
-Patterns for MCP tool integration and long-running workflows.
+Two patterns for advanced agent capabilities:
+
+- **Long Running** — A shipping coordinator that pauses mid-tool for human approval on large orders (`> 5 containers`), then resumes with the decision via `adk_request_confirmation`
+- **MCP Agent** — An image agent that connects to an MCP server over stdio (`@modelcontextprotocol/server-everything`) and exposes its `getTinyImage` tool to the LLM
+
+### Day 3a — Sessions and State
+Three runnable scripts demonstrating how ADK manages conversation memory and structured state:
+
+- **sessions.py** — `InMemorySessionService`: agent remembers within a session, forgets across sessions
+- **state.py** — Session state tools: agent saves and retrieves structured user data (`user:name`, `user:country`) via `tool_context.state`
+- **persistent.py** — `DatabaseSessionService` (SQLite): conversation history survives process restarts
+
+### Day 3b — Memory
+*(In progress)*
 
 ## Project Structure
 
@@ -42,10 +55,17 @@ adk-patterns/
 │   ├── config.py             # Shared model factory (Claude Sonnet 4.6)
 │   ├── currency/             # Function tools, agent does the math
 │   └── enhanced_currency/    # Adds a code-executing sub-agent for arithmetic
-└── day2b/                    # Long running and MCP patterns
-    ├── config.py             # Shared model factory (Claude Sonnet 4.6)
-    ├── long_running/
-    └── mcp_agent/
+├── day2b/                    # Long running and MCP patterns
+│   ├── config.py             # Shared model factory (Claude Sonnet 4.6)
+│   ├── long_running/         # Human-in-the-loop approval workflow
+│   └── mcp_agent/            # MCP tool integration via stdio
+├── day3a/                    # Sessions and state
+│   ├── config.py             # Shared model factory (Claude Sonnet 4.6 via LiteLlm)
+│   ├── sessions.py           # In-memory session demo
+│   ├── state.py              # Structured state via tool_context
+│   └── persistent.py        # SQLite-backed persistent sessions
+└── day3b/                    # Memory (in progress)
+    └── memory.py
 ```
 
 ## Setup
@@ -77,6 +97,11 @@ adk web day2a
 
 # Long running and MCP patterns (pick from dropdown)
 adk web day2b
+
+# Sessions and state (run scripts directly)
+python day3a/sessions.py
+python day3a/state.py
+python day3a/persistent.py
 ```
 
 ## Requirements
